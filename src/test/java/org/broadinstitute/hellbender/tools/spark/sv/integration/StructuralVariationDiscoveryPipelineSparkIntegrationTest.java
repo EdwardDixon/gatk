@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,7 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
                     " --breakpoint-intervals " + outputDir + "/intervals" +
                     " --fastq-dir "            + outputDir + "/fastq" +
                     (cnvCallsLoc == null ? "" : " --cnv-calls " + cnvCallsLoc) +
-                    " --exp-interpret";
+                    " --legacy";
         }
 
         @Override
@@ -104,9 +103,9 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
         runCommandLine(args);
 
         svDiscoveryVCFEquivalenceTest(
-                args.get(args.indexOf("-O")+1) + "sample_inv_del_ins.vcf",
+                args.get(args.indexOf("-O")+1) + "sample_merged_simple.vcf",
                 SVIntegrationTestDataProvider.EXPECTED_SIMPLE_DEL_VCF,
-                args.get(args.indexOf("-O")+1).concat("sample_experimentalInterpretation_NonComplex.vcf"),
+                args.get(args.indexOf("-O")+1).concat("sample_legacy_inv_del_ins.vcf"),
                 annotationsToIgnoreWhenComparingVariants, false);
 
         Assert.assertTrue(Files.exists(IOUtils.getPath( args.get(args.indexOf("--contig-sam-file") + 1).replace(".bam", ".bai") )));
@@ -150,7 +149,7 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
             // outputs, prefix with hdfs address
             idx = argsToBeModified.indexOf("-O");
             path = new Path(workingDirectory, "test");
-            final String vcfOnHDFS = path.toUri().toString() + "/sample_inv_del_ins.vcf";
+            final String vcfOnHDFS = path.toUri().toString() + "/sample_merged_simple.vcf";
             argsToBeModified.set(idx+1, path.toUri().toString());
 
             idx = argsToBeModified.indexOf("--contig-sam-file");
@@ -168,7 +167,7 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
 
             runCommandLine(argsToBeModified);
             svDiscoveryVCFEquivalenceTest(vcfOnHDFS, SVIntegrationTestDataProvider.EXPECTED_SIMPLE_DEL_VCF,
-                    vcfOnHDFS.replace("_inv_del_ins.vcf", "_experimentalInterpretation_NonComplex.vcf"),
+                    vcfOnHDFS.replace("_merged_simple.vcf", "_legacy_inv_del_ins.vcf"),
                     annotationsToIgnoreWhenComparingVariants,
                     true);
 
@@ -177,8 +176,8 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
     }
 
     static void svDiscoveryVCFEquivalenceTest(final String generatedVCFPath, final String expectedVCFPath,
-                                              final String experimentalOutputPathForNonComplex,
-                                              final List<String> attributesToIgnore, final boolean onHDFS) throws Exception {
+                                              final String legacyOutput, final List<String> attributesToIgnore,
+                                              final boolean onHDFS) throws Exception {
 
         final List<VariantContext> expectedVcs;
         if (expectedVCFPath == null) {
@@ -198,16 +197,13 @@ public class StructuralVariationDiscoveryPipelineSparkIntegrationTest extends Co
         GATKBaseTest.assertCondition(actualVcs, expectedVcs,
                 (a, e) -> VariantContextTestUtils.assertVariantContextsAreEqual(a, e, attributesToIgnore));
 
-        if ( experimentalOutputPathForNonComplex != null ) {
-            final java.nio.file.Path path = IOUtils.getPath(experimentalOutputPathForNonComplex);
-            final String experimentalInsDelVcf = onHDFS ? path.toUri().toString() : path.toString();
-            actualVcs = extractActualVCs(experimentalInsDelVcf, onHDFS);
+        if ( legacyOutput != null ) {
+            final java.nio.file.Path path = IOUtils.getPath(legacyOutput);
+            final String legacyInsDelVcf = onHDFS ? path.toUri().toString() : path.toString();
+            actualVcs = extractActualVCs(legacyInsDelVcf, onHDFS);
 
-            // TODO: 1/28/18 see ticket #4228
-            final List<String> moreAttributesToIgnoreForNow = new ArrayList<>(attributesToIgnore);
-            moreAttributesToIgnoreForNow.addAll(Collections.singletonList("EXTERNAL_CNV_CALLS"));
             GATKBaseTest.assertCondition(actualVcs, expectedVcs,
-                    (a, e) -> VariantContextTestUtils.assertVariantContextsAreEqual(a, e, moreAttributesToIgnoreForNow));
+                    (a, e) -> VariantContextTestUtils.assertVariantContextsAreEqual(a, e, attributesToIgnore));
         }
     }
 

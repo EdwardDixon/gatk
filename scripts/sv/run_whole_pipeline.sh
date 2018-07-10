@@ -71,7 +71,7 @@ case ${GATK_SV_TOOL} in
             --fastq-dir ${PROJECT_OUTPUT_DIR}/fastq \
             --contig-sam-file ${PROJECT_OUTPUT_DIR}/assemblies.bam \
             --target-link-file ${PROJECT_OUTPUT_DIR}/target_links.bedpe \
-            --exp-interpret"
+            --legacy"
         ;;
     "ExtractSVEvidenceSpark")
         TOOL_OPTIONS="\
