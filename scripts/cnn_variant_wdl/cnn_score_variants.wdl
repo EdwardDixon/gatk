@@ -168,7 +168,7 @@ command <<<
   runtime {
     docker: cnn_gatk_docker
     memory: machine_mem + " MB"
-    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " SSD"
+    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
     minCpuPlatform: "Intel Haswell"
@@ -226,7 +226,7 @@ task SplitIntervals {
     runtime {
         docker: gatk_docker
         memory: machine_mem + " MB"
-        disks: "local-disk " + select_first([disk_space, 100]) + " SSD"
+        disks: "local-disk " + select_first([disk_space, 100]) + " HDD"
         preemptible: select_first([preemptible_attempts, 10])
         cpu: select_first([cpu, 1])
         bootDiskSizeGb: "16"
@@ -270,7 +270,7 @@ command <<<
   runtime {
     docker: gatk_docker
     memory: machine_mem + " MB"
-    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " SSD"
+    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
     bootDiskSizeGb: "16"
@@ -331,8 +331,8 @@ command <<<
   runtime {
     docker: gatk_docker
     memory: machine_mem + " MB"
-    # Note that the space before SSD and HDD should be included.
-    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " SSD"
+    # Note that the space before HDD and HDD should be included.
+    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
     bootDiskSizeGb: "16"
