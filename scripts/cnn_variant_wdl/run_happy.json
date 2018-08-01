@@ -6,7 +6,7 @@
   "HappyWorkflow.truth_bed": "gs://broad-dsde-methods/cnn-variant-score/beds/chr20_conf_1m_10m.bed",
   "HappyWorkflow.truth_vcf": "gs://broad-dsde-methods/cnn-variant-score/vcfs/nist_na12878_giab_hg38.vcf.gz",
   "HappyWorkflow.truth_vcf_index": "gs://broad-dsde-methods/cnn-variant-score/vcfs/nist_na12878_giab_hg38.vcf.gz.tbi",
-  "HappyWorkflow.rscript": "gs://broad-dsde-methods/cnn-variant-score/happy_plot.R",
+  "HappyWorkflow.rscript": "gs://broad-dsde-methods/cnn-variant-score/scripts/happy_plot.R",
   "HappyWorkflow.disk_space": "100",
   "HappyWorkflow.cpu": "2",
   "HappyWorkflow.mem_gb": "16",

@@ -45,7 +45,7 @@ workflow Cram2FilteredVcf {
               reference_fasta_index = reference_fasta_index,
               cram_file = input_file,
               output_prefix = output_prefix,
-              disk_space_gb = size(input_file, "GB") + ref_size + additional_disk,
+              disk_space_gb = 4*size(input_file, "GB") + ref_size + additional_disk,
               preemptible_attempts = preemptible_attempts
         }
     }
