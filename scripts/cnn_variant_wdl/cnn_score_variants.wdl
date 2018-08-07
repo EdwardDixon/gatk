@@ -172,7 +172,7 @@ command <<<
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
     minCpuPlatform: "Intel Haswell"
-    zones: "us-east4-a"
+    zones: "us-central1-b"
     bootDiskSizeGb: "16"
   }
 

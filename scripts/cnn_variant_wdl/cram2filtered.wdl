@@ -254,7 +254,6 @@ task RunHC4 {
         disks: "local-disk " + sub(disk_space_gb, "\\..*", "") + " HDD"
         preemptible: select_first([preemptible_attempts, 3])
         cpu: select_first([cpu, 1])
-        zones: "us-east4-a"
         bootDiskSizeGb: "16"
     }
 }
@@ -292,7 +291,7 @@ task CNNScoreVariants {
 
     # Mem is in units of GB but our command and memory runtime values are in MB
     Int machine_mem = if defined(mem_gb) then mem_gb *1000 else default_ram_mb
-    Int command_mem = machine_mem - 1000
+    Int command_mem = machine_mem / 2 # was machine_mem - 1000
 
 command <<<
         set -e
@@ -311,7 +310,8 @@ command <<<
         ${"--inference-batch-size " + inference_batch_size} \
         ${"--transfer-batch-size " + transfer_batch_size} \
         ${"--intra-op-threads " + intra_op_threads} \
-        ${"--inter-op-threads " + inter_op_threads}
+        ${"--inter-op-threads " + inter_op_threads} \
+        --enable-journal
 >>>
 
   runtime {
@@ -321,9 +321,9 @@ command <<<
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 1])
 
-    # minCpuPlatform isn't respected by cromwell yet, but the us-east4-a zone guarantees >=Haswell
-    minCpuPlatform: "Intel Haswell"
-    zones: "us-east4-a"
+    # minCpuPlatform isn't respected by cromwell yet, but zone central1-b uses Haswell by default
+    # minCpuPlatform: "Intel Haswell"
+    zones: "us-central1-b"
     bootDiskSizeGb: "16"
   }
 
