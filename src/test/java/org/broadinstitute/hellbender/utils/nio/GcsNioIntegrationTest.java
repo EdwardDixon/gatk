@@ -1,5 +1,6 @@
 package org.broadinstitute.hellbender.utils.nio;
 
+import com.google.api.client.http.HttpResponseException;
 import com.google.cloud.storage.StorageException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +55,7 @@ public final class GcsNioIntegrationTest extends GATKBaseTest {
             try (OutputStream os = Files.newOutputStream(outputPath)) {
                 os.write(42);
             }
-        } catch (shaded.cloud_nio.com.google.api.client.http.HttpResponseException forbidden) {
+        } catch (HttpResponseException forbidden) {
             helpDebugAuthError();
             throw forbidden;
         }
