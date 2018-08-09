@@ -169,7 +169,7 @@ public final class VariantFiltration extends VariantWalker {
     /**
      * Invalidate previous filters applied to the VariantContext, applying only the filters here
      */
-    @Argument(fullName=StandardArgumentDefinitions.REMOVE_OLD_FILTERS_LONG_NAME, doc="Remove previous filters applied to the VCF", optional=true)
+    @Argument(fullName=StandardArgumentDefinitions.INVALIDATE_PREVIOUS_FILTERS_LONG_NAME, doc="Remove previous filters applied to the VCF", optional=true)
     boolean invalidatePreviousFilters = false;
 
     /**

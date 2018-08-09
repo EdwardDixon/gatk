@@ -29,13 +29,13 @@ public class FilterVariantTranchesIntegrationTest  extends CommandLineProgramTes
                 .addArgument("resource", indelTruthVCF)
                 .addArgument("snp-tranche", "99.5")
                 .addArgument("indel-tranche", "99.0")
-                .addArgument("remove-old-filters", "true")
+                .addArgument("invalidate-previous-filters", "true")
                 .addArgument("info-key", "MIX_SMALL_2D_W_DROPOUT")
                 .addArgument(StandardArgumentDefinitions.ADD_OUTPUT_VCF_COMMANDLINE, "false");
 
 
         final IntegrationTestSpec spec = new IntegrationTestSpec(argsBuilder.toString(),
-                    Arrays.asList(largeFileTestDir + "VQSR/expected/g94982_20_1m_10m_tranched_99.vcf"));
+                    Arrays.asList(largeFileTestDir + "VQSR/expected/g94982_20_1m_10m_tranched_99_99.5.vcf"));
         spec.executeTest("testTrancheFiltering", this);
     }
 
@@ -54,12 +54,12 @@ public class FilterVariantTranchesIntegrationTest  extends CommandLineProgramTes
                 .addArgument("indel-tranche", "99.0")
                 .addArgument("snp-tranche", "99.5")
                 .addArgument("indel-tranche", "99.0")
-                .addArgument("remove-old-filters", "true")
+                .addArgument("invalidate-previous-filters", "true")
                 .addArgument("info-key", "MIX_SMALL_2D_W_DROPOUT")
                 .addArgument(StandardArgumentDefinitions.ADD_OUTPUT_VCF_COMMANDLINE, "false");
 
         final IntegrationTestSpec spec = new IntegrationTestSpec(argsBuilder.toString(),
-                Arrays.asList(largeFileTestDir + "VQSR/expected/g94982_20_1m_10m_tranched_99.vcf"));
+                Arrays.asList(largeFileTestDir + "VQSR/expected/g94982_20_1m_10m_tranched_99_99.5.vcf"));
         spec.executeTest("testTrancheFilteringDuplicate", this);
     }
 
@@ -80,7 +80,7 @@ public class FilterVariantTranchesIntegrationTest  extends CommandLineProgramTes
                 .addArgument("indel-tranche", "95.0")
                 .addArgument("indel-tranche", "99.0")
                 .addArgument("indel-tranche", "99.9")
-                .addArgument("remove-old-filters", "true")
+                .addArgument("invalidate-previous-filters", "true")
                 .addArgument("info-key", "MIX_SMALL_2D_W_DROPOUT")
                 .addArgument(StandardArgumentDefinitions.ADD_OUTPUT_VCF_COMMANDLINE, "false");
 
@@ -105,7 +105,7 @@ public class FilterVariantTranchesIntegrationTest  extends CommandLineProgramTes
                 .addArgument("indel-tranche", "99.9")
                 .addArgument("indel-tranche", "95.0")
                 .addArgument("indel-tranche", "99.0")
-                .addArgument("remove-old-filters", "true")
+                .addArgument("invalidate-previous-filters", "true")
                 .addArgument("info-key", "MIX_SMALL_2D_W_DROPOUT")
                 .addArgument(StandardArgumentDefinitions.ADD_OUTPUT_VCF_COMMANDLINE, "false");
 
@@ -128,7 +128,6 @@ public class FilterVariantTranchesIntegrationTest  extends CommandLineProgramTes
                 .addArgument("snp-tranche", "99.0")
                 .addArgument("indel-tranche", "99.0")
                 .addArgument("info-key", "MIX_SMALL_2D_W_DROPOUT")
-                .addArgument("remove-old-filters", "false")
                 .addArgument(StandardArgumentDefinitions.ADD_OUTPUT_VCF_COMMANDLINE, "false");
 
 
