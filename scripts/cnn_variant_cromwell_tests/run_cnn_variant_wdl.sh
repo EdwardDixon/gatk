@@ -24,7 +24,7 @@ fi
 echo "Docker build done =========="
 
 cd $WORKING_DIR/gatk/scripts/
-sed -r "s/__GATK_DOCKER__/broadinstitute\/gatk\:$HASH_TO_USE/g" cnn_variant_cromwell_tests/jsons/cnn_score_variants.json >$WORKING_DIR/cnn_score_variants.json
+sed -r "s/__GATK_DOCKER__/broadinstitute\/gatk\:$HASH_TO_USE/g" cnn_variant_wdl/jsons/cnn_score_variants.json >$WORKING_DIR/cnn_score_variants.json
 echo "JSON FILE (modified) ======="
 cat $WORKING_DIR/cnn_score_variants.json
 echo "=================="
