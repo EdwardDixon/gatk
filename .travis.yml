@@ -133,7 +133,6 @@ script:
     echo "Running M2 WDL";
     sudo bash scripts/m2_cromwell_tests/run_m2_wdl.sh;
   elif [[ $RUN_CNN_WDL == true ]]; then
-    echo "Deleting some unused files before running CNN WDL...";
     echo "Running CNN WDL";
     sudo bash scripts/cnn_variant_cromwell_tests/run_cnn_variant_wdl.sh;
   elif [[ $TEST_DOCKER == true ]]; then
