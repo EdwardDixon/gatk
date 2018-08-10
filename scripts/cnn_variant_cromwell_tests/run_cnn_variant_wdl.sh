@@ -24,13 +24,13 @@ fi
 echo "Docker build done =========="
 
 cd $WORKING_DIR/gatk/scripts/
-sed -r "s/__GATK_DOCKER__/broadinstitute\/gatk\:$HASH_TO_USE/g" cnn_variant_wdl/jsons/cnn_score_variants.json >$WORKING_DIR/cnn_score_variants.json
+sed -r "s/__GATK_DOCKER__/broadinstitute\/gatk\:$HASH_TO_USE/g" cnn_variant_wdl/jsons/cnn_score_variants_travis.json >$WORKING_DIR/cnn_score_variants_travis.json
 echo "JSON FILE (modified) ======="
-cat $WORKING_DIR/cnn_score_variants.json
+cat $WORKING_DIR/cnn_score_variants_travis.json
 echo "=================="
 
 
 echo "Running CNN Score Variants WDL through cromwell"
 ln -fs $WORKING_DIR/gatk/scripts/cnn_variant_wdl/cnn_score_variants.wdl
-sudo java -jar $CROMWELL_JAR run $WORKING_DIR/gatk/scripts/cnn_variant_wdl/cnn_score_variants.wdl -i $WORKING_DIR/cnn_score_variants.json
+sudo java -jar $CROMWELL_JAR run $WORKING_DIR/gatk/scripts/cnn_variant_wdl/cnn_score_variants.wdl -i $WORKING_DIR/cnn_score_variants_travis.json
 
