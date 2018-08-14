@@ -90,7 +90,7 @@ public final class ExtractOriginalAlignmentRecordsByNameSpark extends GATKSparkT
         final Function<GATKRead, Boolean> predicate = getGatkReadBooleanFunction(namesToLookForBroadcast);
 
         final JavaRDD<GATKRead> reads = getUnfilteredReads().filter(predicate).cache();
-        writeReads(ctx, outputSAM, reads);
+        writeReads(ctx, outputSAM, reads, getHeaderForReads());
 
         logger.info("Found " + reads.count() + " alignment records for " +
                     namesToLookForBroadcast.getValue().size() + " unique read names.");
@@ -106,9 +106,9 @@ public final class ExtractOriginalAlignmentRecordsByNameSpark extends GATKSparkT
 
         try ( final BufferedReader rdr =
                       new BufferedReader(new InputStreamReader(BucketUtils.openFile(readNameFile))) ) {
-            return rdr.lines().map(s -> s.replace("^@", "")
-                                         .replace("/1$", "")
-                                         .replace("/2$", ""))
+            return rdr.lines().map(s -> s.replaceAll("^@", "")
+                                         .replaceAll("/1$", "")
+                                         .replaceAll("/2$", ""))
                     .collect(Collectors.toCollection(HashSet::new));
         } catch ( final IOException ioe ) {
             throw new GATKException("Unable to read names file from " + readNameFile, ioe);
